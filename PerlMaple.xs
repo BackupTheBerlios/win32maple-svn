@@ -11,6 +11,7 @@ static int error = 0;
 
 /* callback used for directing result output */
 static void M_DECL textCallBack( void *data, int tag, char *output ) {
+    if (tag == MAPLE_TEXT_STATUS) return;
     strncpy(result, output, sizeof(result));
     result[sizeof(result)-1] = '\0';
 }
