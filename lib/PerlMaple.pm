@@ -128,6 +128,15 @@ It returns the error message issued by the Maple kernel.
 
 =back
 
+=head1 REPOSITORY
+
+You can always get the latest version from the following SVN
+repository:
+
+    L<https://svn.berlios.de/svnroot/repos/win32maple>
+
+If you want a committer bit, please let me know.
+
 =head1 SEE ALSO
 
 L<http://www.maplesoft.com>
