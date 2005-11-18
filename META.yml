@@ -1,6 +1,6 @@
 name: PerlMaple
 version: 0.01
-abstract: Perl binding for Waterloo's Maple on Win32
+abstract: Perl binding for Waterloo's Maple software
 author: Agent Zhang <agent2002@126.com>
 license: perl
 distribution_type: module
