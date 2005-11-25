@@ -17,3 +17,8 @@ WriteMakefile(
 );
 
 &WriteAll();
+
+warn "*** ----------------------------------------------- ***\n";
+warn "*** Make sure you have Maple 9 or higher installed  ***\n";
+warn "*** and maplec.h in INC and maplec.lib in LIB       ***\n";
+warn "*** ----------------------------------------------- ***\n";

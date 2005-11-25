@@ -70,7 +70,7 @@ C interface.
 
 Currently this software is only tested on Win32. To build this module
 properly, you must first have Maple installed on your system and append
-the paths of maplec.h and maplec.lib in your Maple installation to the
+the paths of B<maplec.h> and B<maplec.lib> in your Maple installation to the
 environments LIB and INC respectively. Because this module use Maple's
 C interface via L<Inline::C>.
 

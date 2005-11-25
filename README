@@ -8,9 +8,9 @@ INSTALLATION
 
 Currently this software is only tested on Win32. To build this module
 properly, you must first have Maple installed on your system and append
-the paths of maplec.h and maplec.lib in your Maple installation to the
+the paths of *maplec.h* and *maplec.lib* in your Maple installation to the
 enviroments LIB and INC respectively. Because this module use Maple's
-C interface via L<Inline::C>.
+C interface via Inline::C.
 
 A typical path of maplec.h is "C:\Program Files\Maple 9\extern\include",
 which should be appended to the INCLUDE environment. And a typical path
@@ -26,6 +26,10 @@ To install this module type the following:
    make
    make test
    make install
+
+Prerequisites
+
+  Waterloo's Maple software (version 9 or higher)
 
 DEPENDENCIES
 
