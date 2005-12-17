@@ -75,6 +75,7 @@ maple_eval (expr)
 	I32* temp;
 	PPCODE:
 	temp = PL_markstack_ptr++;
+	result[0] = '\0';
 	maple_eval(expr);
 	if (PL_markstack_ptr != temp) {
           /* truly void, because dXSARGS not invoked */
