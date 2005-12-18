@@ -260,6 +260,35 @@ It returns the error message issued by the Maple kernel.
 
 =back
 
+=head1 TODO
+
+=over
+
+=item *
+
+Provide facilities that can convert Maple lists, sequences, arrays, and sets
+to Perl arrays. High dimensional lists should also be supported.
+
+=item *
+
+Import ASTs of common Maple expressions to the Perl land (by virtue of Maple's op
+and nops functions). For example, Maple expression '[1,2]' will construct a Perl
+AST of the form:
+
+    ['list', ['Integer', 1], ['Integer', 2]]
+
+or even
+
+    bless [
+            bless([1], 'Integer'),
+            bless([2], 'Integer'),
+    ], 'list';
+
+It can be even more exciting to get this Perl AST serialized back
+to a Maple expression!
+
+=back
+
 =head1 REPOSITORY
 
 You can always get the latest version from the following SVN
