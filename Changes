@@ -33,6 +33,7 @@ Revision history for Perl extension PerlMaple.
 	  if you turn on the ReturnAST attribute.
 	* Added many, many POD docs and many, many tests for the vast variety of 
 	  new features.
+	* Added code coverage testing results to POD docs. (Thanks to Devel::Cover.)
 
 0.01  Tue Nov 15 22:26:13 2005
     * original version; created by h2xs 1.23 with options
