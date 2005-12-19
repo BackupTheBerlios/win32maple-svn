@@ -335,15 +335,40 @@ method every time, so this attribute is off by default.
 
 =item maple_error
 
+Returns the raw error message issued by the Maple kernel.
+
 =item maple_eval
+
+Raw XS C method that evaluates any Maple commands.
 
 =item maple_result
 
+Returns the raw output of the Maple kernel.
+
 =item maple_start
+
+Starts the global Maple kernel. (No that all PerlMaple objects share
+the same Maple engine, so preventing context clashes is the
+duty of the user.
 
 =item maple_success
 
+Indicates whether the last Maple evaluation is successful.
+
 =back
+
+=head1 CODE COVERAGE
+
+I use L<Devel::Cover> to test the code coverage of my tests, below is the 
+L<Devel::Cover> report on this module's test suite (version 0.02):
+
+    ---------------------------- ------ ------ ------ ------ ------ ------ ------
+    File                           stmt   bran   cond    sub    pod   time  total
+    ---------------------------- ------ ------ ------ ------ ------ ------ ------
+    blib/lib/PerlMaple.pm          94.8   86.4   66.7  100.0  100.0   98.1   93.2
+    ...b/PerlMaple/Expression.pm  100.0   94.4   66.7  100.0  100.0    1.9   95.1
+    Total                          97.1   90.0   66.7  100.0  100.0  100.0   94.1
+    ---------------------------- ------ ------ ------ ------ ------ ------ ------
 
 =head1 REPOSITORY
 
