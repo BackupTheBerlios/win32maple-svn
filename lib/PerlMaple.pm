@@ -8,8 +8,10 @@ package PerlMaple;
 
 use strict;
 use warnings;
-use vars qw( $AUTOLOAD );
+
+use PerlMaple::Expression;
 use Carp qw(carp croak);
+use vars qw( $AUTOLOAD );
 
 our $VERSION = '0.02';
 my $Started = 0;
@@ -39,7 +41,9 @@ sub eval_cmd {
     #warn $exp;
     maple_eval($exp);
     if (maple_success()) {
-        return maple_result();
+        my $res = maple_result();
+        return
+            $self->{ReturnAST} ? $self->to_ast($res) : $res;
     }
     if ($self->{PrintError}) {
         carp "PerlMaple error: ", $self->error;
@@ -68,11 +72,25 @@ sub RaiseError {
     }
 }
 
+sub ReturnAST {
+    my $self = shift;
+    if (@_) {
+        $self->{ReturnAST} = shift;
+    } else {
+        return $self->{ReturnAST};
+    }
+}
+
 sub error {
     if (!maple_success()) {
         return maple_error();
     }
     return undef;
+}
+
+sub to_ast {
+    shift;
+    return PerlMaple::Expression->new(@_);
 }
 
 sub AUTOLOAD {
@@ -128,6 +146,23 @@ PerlMaple - Perl binding for Waterloo's Maple software
   print $maple->diff('2*x^3', 'x');
   print $maple->ifactor('1000!');
 
+  # Advanced usage (manipulating Maple ASTs directly):
+  $ast = $maple->to_ast('[1,2,3]');
+  foreach ($ast->ops) {
+      print $_->expr;
+  }
+
+  # Get eval_cmd and other AUTOLOADed Maple function
+  # to return ASTs automagically:
+  $maple->ReturnAST(1);
+  $ast = $maple->solve('x^2+x=0', 'x');
+  my @roots;
+  if ($ast->type('exprseq')) {
+    foreach ($ast->ops) {
+        push @roots, $_->expr;
+    }
+  }
+
 =head1 VERSION
 
 This document describes PerlMaple 0.02 released on December XXX, 2005.
@@ -163,13 +198,19 @@ PerlMaple uses AUTOLOAD mechanism so that any Maple functions are also valid
 methods of your PerlMaple object, even those Maple procedures defined by 
 yourself.
 
+When the ReturnAST attribute is on, all AUTOLOADed methods, along with the
+-E<gt>eval_cmd method will return a 
+PerlMaple::Expression object constructed from the resulting expression.
+Because there's a cost involved in constructing an AST from the given Maple
+expression, so the ReturnAST attribute is off by default.
+
 B<WARNING:> The -E<gt>eval method is now incompatible with that of the first
 release (0.01). It is AUTOLOADed as the Maple counterpart. So you have to turn to
 -E<gt>eval_cmd when Maple's eval function can't fit your needs. Sorry.
 
 =over
 
-=item -E<gt>new(RaiseError => .., PrintError => ..)
+=item -E<gt>new(RaiseError => .., PrintError => .., ReturnAST => ..)
 
 Class constructor. It starts a Maple session if it does not exist. It should
 be noting that although you're able to create more than one PerlMaple objects,
@@ -180,7 +221,70 @@ read by the -E<gt>error() method.
 
 This method also accepts two optional named arguments. When RaiseError is
 set true, the constructor sets the RaiseError attribute of the new object
-internally. And it is the same for the PrintError attribute.
+internally. And it is the same for the PrintError and ReturnAST attributes.
+
+=item -E<gt>eval_cmd($command)
+
+This method may be the most important one for the implementation of this class.
+It evaluates the
+command stored in the argument, and returns a string containing the result
+when the ReturnAST attribute is off. (It's off by default.)
+If an error occurs, it will return undef, and set the internal error buffer
+which you can read by the -E<gt>error() method.
+
+Frankly speaking, most of the time you can use -E<gt>eval method instead of
+invoking this method directly. However, this method is a bit faster, 
+because any AUTOLOADed method is invoked this one internally. Moreover, there
+exists something that can only be eval'ed properly bu -E<gt>eval_cmd. 
+Here is a small example:
+
+    $maple->eval_cmd(<<'.');
+    lc := proc( s, u, t, v )
+             description "form a linear combination of the arguments";
+             s * u + t * v
+    end proc;
+    .
+
+If you use -E<gt>eval instead, you will get the following error message:
+
+    `:=` unexpected
+
+That's because "eval" is a normal Maple function and hence you can't use
+assignment statement as the argument.
+
+When the ReturnAST attribute is on, this method will return a 
+PerlMaple::Expression object constructed from the expression returned by 
+Maple automatically.
+
+=item -E<gt>to_ast($maple_expr, ?$verified)
+
+This method is a shortcut for constructing a PerlMaple::Expression
+instance. For more infomation on the PerlMaple::Expression class
+and the second optional argument of this method, please turn to
+L<PerlMaple::Expression>.
+
+Here is a quick demo to illustrate the power of the PerlMaple::Expression
+class (you can get many more in the doc for L<PerlMaple::Expression>.
+
+    $ast = $maple->to_ast('[1,2,3]');
+    my @list;
+    foreach ($ast->ops) {
+        push @list, $_->expr;
+    }
+    # now @list contains numbers 1, 2, and 3.
+
+=item -E<gt>error()
+
+It returns the error message issued by the Maple kernel.
+
+=back
+
+=head1 ATTRIBUTES
+
+All the attributes specified below can be set by passing name-value pairs to
+the -E<gt>new method.
+
+=over
 
 =item -E<gt>PrintError
 
@@ -210,37 +314,14 @@ C<croak("PerlMaple error: ", $self->error)>.
 If you turn RaiseError on then you'd normally turn PrintError off. 
 If PrintError is also on, then the PrintError is done first (naturally).
 
-=item -E<gt>eval_cmd($command)
+=item -E<gt>ReturnAST
 
-This method may be the most important one for the implementation of this class.
-It evaluates the
-command stored in the argument, and returns a string containing the result.
-If an error occurs, it will return undef, and set the internal error buffer
-which you can read by the -E<gt>error() method.
+=item -E<gt>ReturnAST($new_value)
 
-Frankly speaking, most of the time you can use -E<gt>eval method instead of
-invoking this method directly. However, this method is a bit faster, 
-because any AUTOLOADed method is invoked this one internally. Moreover, there
-exists something that can only be eval'ed properly bu -E<gt>eval_cmd. 
-Here is a small example:
-
-    $maple->eval_cmd(<<'.');
-    lc := proc( s, u, t, v )
-             description "form a linear combination of the arguments";
-             s * u + t * v
-    end proc;
-    .
-
-If you use -E<gt>eval instead, you will get the following error message:
-
-    `:=` unexpected
-
-That's because "eval" is a normal Maple function and hence you can't use
-assignment statement as the argument.
-
-=item -E<gt>error()
-
-It returns the error message issued by the Maple kernel.
+The ReturnAST attribute can be used to force the -E<gt>eval_cmd method
+and hence all AUTOLOADed Maple functions to return a Abstract
+Syntactic Tree (AST). Because there is a cost to evaluate the -E<gt>to_ast
+method everytime, so this attribute is off by default.
 
 =back
 
@@ -260,35 +341,6 @@ It returns the error message issued by the Maple kernel.
 
 =back
 
-=head1 TODO
-
-=over
-
-=item *
-
-Provide facilities that can convert Maple lists, sequences, arrays, and sets
-to Perl arrays. High dimensional lists should also be supported.
-
-=item *
-
-Import ASTs of common Maple expressions to the Perl land (by virtue of Maple's op
-and nops functions). For example, Maple expression '[1,2]' will construct a Perl
-AST of the form:
-
-    ['list', ['Integer', 1], ['Integer', 2]]
-
-or even
-
-    bless [
-            bless([1], 'Integer'),
-            bless([2], 'Integer'),
-    ], 'list';
-
-It can be even more exciting to get this Perl AST serialized back
-to a Maple expression!
-
-=back
-
 =head1 REPOSITORY
 
 You can always get the latest version from the following SVN
@@ -300,7 +352,8 @@ If you want a committer bit, please let me know.
 
 =head1 SEE ALSO
 
-L<http://www.maplesoft.com>
+L<http://www.maplesoft.com>,
+L<PerlMaple::Expression>.
 
 =head1 AUTHOR
 

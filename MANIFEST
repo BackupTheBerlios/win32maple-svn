@@ -6,3 +6,5 @@ ppport.h
 README
 t/PerlMaple.t
 lib/PerlMaple.pm
+lib/PerlMaple/Expression.pm
+t/PerlMaple-Expression.t
