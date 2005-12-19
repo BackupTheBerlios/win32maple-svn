@@ -8,9 +8,10 @@ abstract_from   ('lib/PerlMaple.pm');
 author          ('Agent Zhang <agent2002@126.com>');
 license         ('perl');
 
-requires        ('Inline');
+requires        ('Carp');
 
 build_requires  ('Test::More');
+build_requires  ('Test::Deep');
 
 WriteMakefile(
     OBJECT => 'PerlMaple$(OBJ_EXT) maplec$(LIB_EXT)',
@@ -18,7 +19,14 @@ WriteMakefile(
 
 &WriteAll();
 
-warn "*** ----------------------------------------------- ***\n";
-warn "*** Make sure you have Maple 9 or higher installed  ***\n";
-warn "*** and maplec.h in INC and maplec.lib in LIB       ***\n";
-warn "*** ----------------------------------------------- ***\n";
+warn <<'_EOC_';
+
+      *** ------------------------------------------------- ***
+      ***                                                   ***
+      ***   Make sure you have Maple 9 or higher installed  ***
+      ***   and have maplec.h in INC, maplec.lib            ***
+      ***   (or maplec.a, etc.) in LIB                      ***
+      ***                                                   ***
+      *** ------------------------------------------------- ***
+
+_EOC_

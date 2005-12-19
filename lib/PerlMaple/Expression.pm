@@ -9,9 +9,8 @@ package PerlMaple::Expression;
 use strict;
 use warnings;
 use PerlMaple;
-use Smart::Comments;
+#use Smart::Comments;
 
-our $VERSION = '0.02';
 our $maple;
 
 sub new {
@@ -25,7 +24,7 @@ sub new {
     $maple ||= PerlMaple->new;
     $expr = $maple->eval_cmd("$expr;") if not $verified;
     my $type = $maple->whattype($expr);
-    ## Type: $type => $expr
+    ### Type: $type => $expr
     my @ops;
     my $self = bless {
         expr => $expr,
@@ -42,7 +41,7 @@ sub new {
         push @ops, $op;
         return $self;
     }
-    ## Got: $op => $expr
+    ### Got: $op => $expr
     push @ops, $class->new($op);
 
     for my $i (2..$nops) {
@@ -81,16 +80,40 @@ __END__
 
 =head1 NAME
 
-PerlMaple::Expression - Base class for all the nodes of the PerlMaple ASTs
+PerlMaple::Expression - Perl AST for arbitrary Maple expressions
 
 =head1 VERSION
 
-This document describes the PerlMaple::Expression class released on December 20, 2005.
+This document describes PerlMaple::Expression 0.02 released on December 19, 2005.
 
-=head1 DESCRITION
+=head1 SYNOPSIS
+
+    use PerlMaple::Expression;
+
+    $expr = PerlMaple::Expression->new('x^3+2*x-1');
+    print $expr->expr;  # got: x^3+2*x-1
+    print $expr->type;  # got: `+`
+
+    @objs = $expr->ops;
+    @exps = map { $_->expr } @objs;
+    print "@exps";    # got: x^3 2*x -1
+
+    # $objs[0] is another PerlMaple::Expression obj
+    #    corresponding to 'x^3':
+    print $objs[0]->type;  # got: `^`
+    @exps = map { $_->expr } $objs[0]->ops;
+    print "@exps";    # got: x 3
+
+    # $objs[1] is yet another PerlMaple::Expression obj
+    #    corresponding to '2*x':
+    print $objs[1]->type;  # got: `*`
+    @exps = map { $_->expr } $objs[1]->ops;
+    print "@exps";    # got: 2 x
+
+=head1 DESCRIPTION
 
 This class represents an Abstract Syntactic Tree (AST) for any Maple expressions.
-It provides serveral very useful methods and attributes to manipulate Maple
+It provides several very useful methods and attributes to manipulate Maple
 expressions effectively and cleanly.
 
 Hey, there's no parser written in Perl! I used Maple's functions to import the ASTs.
@@ -103,9 +126,9 @@ the sanity of this library.
 
 =item -E<gt>new($expr, ?$verified)
 
-This is the constructor of the PerlMaple::Expression class. The first augument
+This is the constructor of the PerlMaple::Expression class. The first argument
 C<$expr> is any Maple expression (not Maple statements though) from which the
-AST is construted. The second argument C<$verified> is optional. When it's set true,
+AST is constructed. The second argument C<$verified> is optional. When it's set true,
 the expression will skip validity check in Maple's engine, otherwise the first
 argument will be evaluated by Maple to verify its sanity. If the second argument
 is absent, it is implied to be false. That's to say, verification will be
@@ -113,19 +136,23 @@ performed by default.
 
 =item -E<gt>ops
 
-In list context, the C<ops> method returns the list of operands of the current Maple expression.
+In list context, the C<ops> method returns the list of operands of the current
+Maple expression. Every element of the resulting list is still a PerlMaple::Expression
+object.
+
 Observe the following code:
 
     $ast = PerlMaple::Expression->new('[1,2,3]');
-    @ops = $ast->ops;
+    @ops = $ast->ops;  # a list of PerlMaple::Expression instances
+    @elems = map { $_->expr } @ops;  # we get a list of integers (1, 2, and 3)
 
-Then the array @ops will contain three PerlMaple::Expression objects corresponding
+We see, the array @ops will contain three PerlMaple::Expression objects corresponding
 to Maple expressions '1', '2', and '3', respectively. Therefore, the following 
 tests will pass:
 
-    is $ops[0]->expr, 1;
-    is $ops[1]->expr, 2;
-    is $ops[2]->expr, 3;
+    is $ops[0]->type, 'integer';
+    is $ops[1]->type, 'integer';
+    is $ops[2]->type, 'integer';
 
 Internally, -E<gt>ops method calls Maple's C<op> function to get the operands.
 For atomic expressions, such as integers and symbols, -E<gt>C<ops> will simply
@@ -137,7 +164,7 @@ calculated by Maple's C<nops> function internally.
 =item -E<gt>expr
 
 Returns the expression corresponding to the current PerlMaple::Expression object.
-Notet that the string returned may be different from the one passed to the 
+Note that the string returned may be different from the one passed to the 
 constructor. Because it will be evaluated in Maple to check the validity.
 Hence, the following tests will pass:
 

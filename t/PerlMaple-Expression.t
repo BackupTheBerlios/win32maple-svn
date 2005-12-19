@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 48;
+use Test::More tests => 56;
 use Test::Deep;
 
 my $pack;
@@ -167,3 +167,19 @@ $ast = PerlMaple::Expression->new('[7,8,9]');
 is $ops[0]->expr, 7;
 is $ops[1]->expr, 8;
 is $ops[2]->expr, 9;
+
+my $expr = PerlMaple::Expression->new('x^3+2*x-1');
+is $expr->expr, 'x^3+2*x-1';
+is $expr->type, '`+`';
+my @a = $expr->ops;
+ok @a;
+my @b = map { $_->expr } @a;
+cmp_deeply \@b, ['x^3', '2*x', '-1'];
+
+is $a[0]->type, '`^`';
+@b = map { $_->expr } $a[0]->ops;
+cmp_deeply \@b, ['x', '3'];
+
+is $a[1]->type, '`*`';
+@b = map { $_->expr } $a[1]->ops;
+cmp_deeply \@b, ['2', 'x'];

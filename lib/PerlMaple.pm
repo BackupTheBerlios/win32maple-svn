@@ -2,7 +2,7 @@
 #: implementation for the PerlMaple class
 #: v0.02
 #: Copyright (c) 2005 Agent Zhang
-#: 2005-11-14 2005-12-17
+#: 2005-11-14 2005-12-19
 
 package PerlMaple;
 
@@ -135,42 +135,47 @@ PerlMaple - Perl binding for Waterloo's Maple software
     RaiseError => 1,
   );
 
-  print $maple->eval('solve(x^2+2*x+4, x)');
-  print $maple->solve('x^2+2*x+4', 'x');
-  print $maple->eval('int(2*x^3,x)', 'x=2');
-  print $maple->int('2*x^3', 'x=0..2');
+  print $maple->eval('solve(x^2+2*x+4, x)');  # got: -1+I*3^(1/2), -1-I*3^(1/2)
+  print $maple->solve('x^2+2*x+4', 'x');  # ditto
+  print $maple->eval('int(2*x^3,x)', 'x=2');  # got: 8s
+  print $maple->int('2*x^3', 'x=0..2');  # ditto
 
   $maple->PrintError(1);
   $maple->RaiseError(0);
 
-  print $maple->diff('2*x^3', 'x');
-  print $maple->ifactor('1000!');
+  print $maple->diff('2*x^3', 'x'); # got: 6*x^2
+  print $maple->ifactor('1000!');  # will get a lot of stuff...
 
   # Advanced usage (manipulating Maple ASTs directly):
   $ast = $maple->to_ast('[1,2,3]');
   foreach ($ast->ops) {
-      print $_->expr;
+      print $_->expr;  # got 1, 2, and 3 respectively
   }
 
   # Get eval_cmd and other AUTOLOADed Maple function
   # to return ASTs automagically:
   $maple->ReturnAST(1);
   $ast = $maple->solve('x^2+x=0', 'x');
-  my @roots;
-  if ($ast->type('exprseq')) {
+  if ($ast and $ast->type('exprseq')) {
     foreach ($ast->ops) {
         push @roots, $_->expr;
     }
   }
+  print "@roots";  # got: 0 -1
 
 =head1 VERSION
 
-This document describes PerlMaple 0.02 released on December XXX, 2005.
+This document describes PerlMaple 0.02 released on December 19, 2005.
 
 =head1 DESCRIPTION
 
 This is a very simple interface to Waterloo's Maple software via the OpenMaple
-C interface.
+C interface. To use this library, you have to purchase the Maple software:
+
+L<http://www.maplesoft.com>.
+
+Unfortunately, he Maple software is *not* free, sorry, unlike this CPAN 
+distribution.
 
 =head1 INSTALLATION
 
@@ -180,7 +185,9 @@ the paths of B<maplec.h> and B<maplec.lib> in your Maple installation to the
 environments LIB and INC respectively. Because this module use Maple's
 C interface via L<Inline::C>.
 
-A typical path of maplec.h is "C:\Program Files\Maple 9\extern\include",
+Both F<maplec.h> and F<maplec.lib> (or maplec.a on *NIX systems?) are
+provided by your Maple installation itself. A typical path of maplec.h
+is "C:\Program Files\Maple 9\extern\include",
 which should be appended to the INCLUDE environment. And a typical path
 of maplec.lib is "C:\Program Files\Maple 9\bin.win", which should be
 appended to the LIB environment. These paths may be different on your
@@ -235,7 +242,7 @@ which you can read by the -E<gt>error() method.
 Frankly speaking, most of the time you can use -E<gt>eval method instead of
 invoking this method directly. However, this method is a bit faster, 
 because any AUTOLOADed method is invoked this one internally. Moreover, there
-exists something that can only be eval'ed properly bu -E<gt>eval_cmd. 
+exists something that can only be eval'ed properly by -E<gt>eval_cmd. 
 Here is a small example:
 
     $maple->eval_cmd(<<'.');
@@ -259,7 +266,7 @@ Maple automatically.
 =item -E<gt>to_ast($maple_expr, ?$verified)
 
 This method is a shortcut for constructing a PerlMaple::Expression
-instance. For more infomation on the PerlMaple::Expression class
+instance. For more information on the PerlMaple::Expression class
 and the second optional argument of this method, please turn to
 L<PerlMaple::Expression>.
 
@@ -293,13 +300,10 @@ the -E<gt>new method.
 The PrintError attribute can be used to force errors to generate warnings 
 (using Carp::carp) in addition to returning error codes in the normal way. When
 set ``on'' (say, a true value), any method which results in an error 
-occuring will cause the PerlMaple to effectively do a 
+occurring will cause the PerlMaple to effectively do a 
 C<carp("PerlMaple error: ", $self->error)>.
 
 By default, PerlMaple-E<gt>new PrintError ``on''.
-
-If desired, the warnings can be caught and processed using a $SIG{__WARN__} 
-handler or modules like CGI::Carp and CGI::ErrorWrap.
 
 =item -E<gt>RaiseError
 
@@ -321,7 +325,7 @@ If PrintError is also on, then the PrintError is done first (naturally).
 The ReturnAST attribute can be used to force the -E<gt>eval_cmd method
 and hence all AUTOLOADed Maple functions to return a Abstract
 Syntactic Tree (AST). Because there is a cost to evaluate the -E<gt>to_ast
-method everytime, so this attribute is off by default.
+method every time, so this attribute is off by default.
 
 =back
 

@@ -1,6 +1,11 @@
 Revision history for Perl extension PerlMaple.
 
+0.02 12/19/2005
+	- Emphasized that Maple's maplec.h and maplec.lib 
+	  must be in INC and LIB, repectively. Most of the test failure
+	  reports are concerning this issue.
+	- 
+
 0.01  Tue Nov 15 22:26:13 2005
 	- original version; created by h2xs 1.23 with options
 		-A PerlMaple
-
