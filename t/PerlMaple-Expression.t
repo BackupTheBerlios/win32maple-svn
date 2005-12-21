@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 78;
+use Test::More tests => 81;
 use Test::Deep;
 
 my $pack;
@@ -215,8 +215,13 @@ my $res = $maple->rsolve("s", "{a(n),b(n)}");
 like $res, qr/a\(n\)/;
 my $a_n;
 if ($res->type('set')) {
-    $a_n = first { $maple->lhs($_) eq 'a(n)' } $res->ops;
-    $a_n = $maple->rhs($a_n);
+    $a_n = first { $_->lhs eq 'a(n)' } $res->ops;
+    $a_n = $a_n->rhs;
 }
-@a = map { $maple->eval($a_n, "n=$_") } 1..4;
+@a = map { $a_n->eval("n=$_") } 1..4;
 is join(',', @a), '8,73,674,6292';
+
+$expr = PerlMaple::Expression->new( '(3+n)*(n^2+1)' );
+ok $expr;
+is $expr->expand->testeq('3*n^2+3+n^3+n'), 'true';
+is $expr->eval('n=1'), 8;

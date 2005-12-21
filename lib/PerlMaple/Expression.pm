@@ -8,6 +8,9 @@ package PerlMaple::Expression;
 
 use strict;
 use warnings;
+
+use vars qw( $AUTOLOAD );
+
 use PerlMaple;
 #use Smart::Comments;
 
@@ -87,6 +90,17 @@ sub type {
 
 # Autoload Maple internal functions:
 sub AUTOLOAD {
+    my $self = shift;
+    my $method = $AUTOLOAD;
+    #warn "$method";
+
+    $method =~ s/.*:://;
+    return if $method eq 'DESTROY';
+
+    unshift @_, $self->expr;
+    my $args = join(',', @_);
+    $args =~ s/,\s*$//g;
+    return $self->new( $maple->eval_cmd("$method($args);") );
 }
 
 1;
@@ -179,7 +193,18 @@ and perform operations as if it's a simple Perl scalar:
     print $ast == 3.5;          # true
     print $ast > 3.6;           # false
 
-Furthermore, PerlMaple::Expression also exposes the following methods:
+B<AUTOLOADed Methods>
+
+PerlMaple::Expression objects also AUTOLOAD Maple internal functions
+just as PerlMaple instances do. So now we can happily write:
+
+    $expr = PerlMaple::Expression->new( '(3+n)*(n^2+1)' );
+    print $expr->expand->testeq('3*n^2+3+n^3+n');   # get: true
+    print $expr->eval('n=1');  # get: 8
+
+It's really a win in syntax!
+
+Furthermore, PerlMaple::Expression also exposes the following "inherent" methods:
 
 =over
 
@@ -292,17 +317,6 @@ users seldom want a whole AST for their Maple expression.
 
 Make use of Maple's C<subsop> function to allow Perl users to update
 Maple expression ASTs transparently.
-
-=item *
-
-Consider to make PerlMaple::Expression objects autoload Maple functions
-as PerlMaple. So maybe one day, we can write:
-
-    $exp = PerlMaple::Expression->new( '(3+n)(n^2+1)' );
-    print $exp->expand;  # 3*n^2+3+n^3+n
-    print $exp->eval('n=1');  # 6
-
-It's really a win on syntax!
 
 =back
 
