@@ -264,6 +264,22 @@ objects will be delayed until the user actually asks for them (e.g. calling
 the ->ops method). This approach will significantly improve performance since
 users seldom want a whole AST for their Maple expression.
 
+=item *
+
+Make use of Maple's C<subsop> function to allow Perl users to update
+Maple expression ASTs transparently.
+
+=item *
+
+Consider to make PerlMaple::Expression objects autoload Maple functions
+as PerlMaple. So maybe one day, we can write:
+
+    $exp = PerlMaple::Expression->new( '(3+n)(n^2+1)' );
+    print $exp->expand;  # 3*n^2+3+n^3+n
+    print $exp->eval('n=1');  # 6
+
+It's really a win on syntax!
+
 =back
 
 =head1 AUTHOR
