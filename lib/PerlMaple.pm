@@ -2,7 +2,7 @@
 #: implementation for the PerlMaple class
 #: v0.02
 #: Copyright (c) 2005 Agent Zhang
-#: 2005-11-14 2005-12-19
+#: 2005-11-14 2005-12-20
 
 package PerlMaple;
 

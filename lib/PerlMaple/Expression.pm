@@ -2,7 +2,7 @@
 #: Implementation for the PerlMaple::Expression class
 #: v0.02
 #: Copyright (c) 2005 Agent Zhang
-#: 2005-12-19 2005-12-19
+#: 2005-12-19 2005-12-21
 
 package PerlMaple::Expression;
 
@@ -11,6 +11,7 @@ use warnings;
 use PerlMaple;
 #use Smart::Comments;
 
+our $VERSION = '0.02';
 our $maple;
 
 use overload
