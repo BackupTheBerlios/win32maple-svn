@@ -151,7 +151,7 @@ PerlMaple - Perl binding for Waterloo's Maple software
   # Advanced usage (manipulating Maple ASTs directly):
   $ast = $maple->to_ast('[1,2,3]');
   foreach ($ast->ops) {
-      print $_->expr;  # got 1, 2, and 3 respectively
+      print;  # got 1, 2, and 3 respectively
   }
 
   # Get eval_cmd and other AUTOLOADed Maple function
@@ -160,10 +160,17 @@ PerlMaple - Perl binding for Waterloo's Maple software
   $ast = $maple->solve('x^2+x=0', 'x');
   if ($ast and $ast->type('exprseq')) {
     foreach ($ast->ops) {
-        push @roots, $_->expr;
+        push @roots, $_;
     }
   }
   print "@roots";  # got: 0 -1
+
+  $maple->ReturnAST(1);
+  $res = $maple->solve('{x+y=2,x-y=3}', '{x,y}');
+  if ($res->type('set')) {
+      $x = first { $_->lhs eq 'x' } $res->ops;
+      print $x->rhs;  # 5/2
+  }
 
 =head1 VERSION
 
