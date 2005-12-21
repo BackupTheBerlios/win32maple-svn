@@ -180,7 +180,8 @@ distribution.
 =head1 INSTALLATION
 
 Currently this software is only tested on Win32. To build this module
-properly, you must first have Maple installed on your system and append
+properly, you must first have Maple 9 or better installed on your 
+system and append
 the paths of B<maplec.h> and B<maplec.lib> in your Maple installation to the
 environments LIB and INC respectively. Because this module use Maple's
 C interface via L<Inline::C>.
@@ -194,6 +195,9 @@ appended to the LIB environment. These paths may be different on your
 machine but do depend on your Maple's version and location.
 
 It may be similar on UNIX, but I haven't tried that.
+
+It's known that this library's XS part won't work with Maple 7 on Win32.
+Sigh.
 
 =head2 EXPORT
 
