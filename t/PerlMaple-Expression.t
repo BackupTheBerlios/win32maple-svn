@@ -1,12 +1,12 @@
 use strict;
 use warnings;
 
-use Test::More tests => 61;
+use Test::More tests => 63;
 use Test::Deep;
 
 my $pack;
 BEGIN {
-    $pack = 'PerlMaple::Expression'; 
+    $pack = 'PerlMaple::Expression';
     use_ok($pack);
 }
 
@@ -14,9 +14,12 @@ my $ast = $pack->new;
 ok !defined $ast, 'empty expr results in undef obj';
 
 $ast = $pack->new('3');
+my $ast2 = $pack->new('4');
 ok $ast, 'obj ok';
 isa_ok $ast, $pack;
 is $ast->expr, '3', 'method expr';
+ok $ast == 3, 'overloaded == operator';
+ok $ast != 5, 'overloaded != operator';
 
 cmp_deeply(
     $ast,

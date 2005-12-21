@@ -380,14 +380,6 @@ L<Devel::Cover> report on this module's test suite (version 0.02):
 
 =item *
 
-Make the PerlMaple Expression objects a bit "lazy" by only partially build
-up the internal AST during initialization. The construction of the child
-objects will be delayed until the user actually asks for them (e.g. calling
-the ->ops method). This approach will significantly improve performance since
-users seldom want a whole AST for their Maple expression.
-
-=item *
-
 Added PerlMaple::Cookbook and PerlMaple::Tutorial to the distribution.
 Programming Maple in Perl is extremely interesting and useful, so I
 believe these docs are really worth my while.
