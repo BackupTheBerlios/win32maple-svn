@@ -186,7 +186,7 @@ properly, you must first have Maple 9 or better installed on your
 system and append
 the paths of B<maplec.h> and B<maplec.lib> in your Maple installation to the
 environments LIB and INC respectively. Because this module use Maple's
-C interface via L<Inline::C>.
+C interface (OpenMaple) via XS.
 
 Both F<maplec.h> and F<maplec.lib> (or maplec.a on *NIX systems?) are
 provided by your Maple installation itself. A typical path of maplec.h
@@ -393,7 +393,7 @@ believe these docs are really worth my while.
 You can always get the latest version from the following SVN
 repository:
 
-    L<https://svn.berlios.de/svnroot/repos/win32maple>
+L<https://svn.berlios.de/svnroot/repos/win32maple>
 
 If you want a committer bit, please let me know.
 
