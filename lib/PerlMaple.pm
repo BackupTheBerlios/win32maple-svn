@@ -374,6 +374,26 @@ L<Devel::Cover> report on this module's test suite (version 0.02):
     Total                          97.1   90.0   66.7  100.0  100.0  100.0   94.1
     ---------------------------- ------ ------ ------ ------ ------ ------ ------
 
+=head1 TODO
+
+=over
+
+=item *
+
+Make the PerlMaple Expression objects a bit "lazy" by only partially build
+up the internal AST during initialization. The construction of the child
+objects will be delayed until the user actually asks for them (e.g. calling
+the ->ops method). This approach will significantly improve performance since
+users seldom want a whole AST for their Maple expression.
+
+=item *
+
+Added PerlMaple::Cookbook and PerlMaple::Tutorial to the distribution.
+Programming Maple in Perl is extremely interesting and useful, so I
+believe these docs are really worth my while.
+
+=back
+
 =head1 REPOSITORY
 
 You can always get the latest version from the following SVN
