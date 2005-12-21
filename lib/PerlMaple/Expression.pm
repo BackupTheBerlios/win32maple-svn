@@ -27,8 +27,13 @@ sub new {
 
     return undef if not defined $expr;
 
-    $maple ||= PerlMaple->new(ReturnAST => 0);
+    # force verification when assignment occurs.
+    $verified = 0 if $expr =~ /:=/;
+
+    $maple ||= PerlMaple->new;
+    $maple->ReturnAST(0);
     $expr = $maple->eval_cmd("$expr;") if not $verified;
+    $expr = $maple->eval_cmd("%;") if not $verified;
     my $type = $maple->whattype($expr);
     ### Type: $type => $expr
     my @ops;
@@ -78,6 +83,10 @@ sub type {
     }
     my $res = $maple->type($self->{expr}, $type);
     return ($res eq 'true') ? 1 : undef;
+}
+
+# Autoload Maple internal functions:
+sub AUTOLOAD {
 }
 
 1;
@@ -250,6 +259,20 @@ When the expression is of type 'exprseq', this method won't use Maple's
 C<type> function since it will croak on expression sequences. Instead,
 the -E<gt>type method will return true if and only if the given type
 is exactly the same as 'exprseq'.
+
+=back
+
+=head1 BUGS
+
+=over
+
+=item *
+
+Since PerlMaple::Expression share the same OpenMaple engine itself, so it
+will change the context variable in Maple environment, such as %, %%, or
+so. It's a general problem for PerlMaple, and I can't see easy way to fix
+that. Therefore, please don't use %, %%, or whatever like these in your
+Maple commands.
 
 =back
 

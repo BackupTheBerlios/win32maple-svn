@@ -2,7 +2,7 @@
 #: implementation for the PerlMaple class
 #: v0.02
 #: Copyright (c) 2005 Agent Zhang
-#: 2005-11-14 2005-12-20
+#: 2005-11-14 2005-12-21
 
 package PerlMaple;
 
@@ -99,7 +99,7 @@ sub AUTOLOAD {
     my $self = shift;
     my $method = $AUTOLOAD;
     #warn "$method";
-    
+
     $method =~ s/.*:://;
     return if $method eq 'DESTROY';
 
@@ -176,13 +176,13 @@ C interface. To use this library, you have to purchase the Maple software:
 
 L<http://www.maplesoft.com>.
 
-Unfortunately, he Maple software is *not* free, sorry, unlike this CPAN 
+Unfortunately, he Maple software is *not* free, sorry, unlike this CPAN
 distribution.
 
 =head1 INSTALLATION
 
 Currently this software is only tested on Win32. To build this module
-properly, you must first have Maple 9 or better installed on your 
+properly, you must first have Maple 9 or better installed on your
 system and append
 the paths of B<maplec.h> and B<maplec.lib> in your Maple installation to the
 environments LIB and INC respectively. Because this module use Maple's
@@ -208,11 +208,11 @@ None by default.
 =head1 METHODS
 
 PerlMaple uses AUTOLOAD mechanism so that any Maple functions are also valid
-methods of your PerlMaple object, even those Maple procedures defined by 
+methods of your PerlMaple object, even those Maple procedures defined by
 yourself.
 
 When the ReturnAST attribute is on, all AUTOLOADed methods, along with the
--E<gt>eval_cmd method will return a 
+-E<gt>eval_cmd method will return a
 PerlMaple::Expression object constructed from the resulting expression.
 Because there's a cost involved in constructing an AST from the given Maple
 expression, so the ReturnAST attribute is off by default.
@@ -246,9 +246,9 @@ If an error occurs, it will return undef, and set the internal error buffer
 which you can read by the -E<gt>error() method.
 
 Frankly speaking, most of the time you can use -E<gt>eval method instead of
-invoking this method directly. However, this method is a bit faster, 
+invoking this method directly. However, this method is a bit faster,
 because any AUTOLOADed method is invoked this one internally. Moreover, there
-exists something that can only be eval'ed properly by -E<gt>eval_cmd. 
+exists something that can only be eval'ed properly by -E<gt>eval_cmd.
 Here is a small example:
 
     $maple->eval_cmd(<<'.');
@@ -265,8 +265,8 @@ If you use -E<gt>eval instead, you will get the following error message:
 That's because "eval" is a normal Maple function and hence you can't use
 assignment statement as the argument.
 
-When the ReturnAST attribute is on, this method will return a 
-PerlMaple::Expression object constructed from the expression returned by 
+When the ReturnAST attribute is on, this method will return a
+PerlMaple::Expression object constructed from the expression returned by
 Maple automatically.
 
 =item -E<gt>to_ast($maple_expr, ?$verified)
@@ -303,10 +303,10 @@ the -E<gt>new method.
 
 =item -E<gt>PrintError($new_value)
 
-The PrintError attribute can be used to force errors to generate warnings 
+The PrintError attribute can be used to force errors to generate warnings
 (using Carp::carp) in addition to returning error codes in the normal way. When
-set ``on'' (say, a true value), any method which results in an error 
-occurring will cause the PerlMaple to effectively do a 
+set ``on'' (say, a true value), any method which results in an error
+occurring will cause the PerlMaple to effectively do a
 C<carp("PerlMaple error: ", $self->error, " when evaluating \"$exp\"";)>.
 
 By default, PerlMaple-E<gt>new PrintError ``on''.
@@ -317,11 +317,11 @@ By default, PerlMaple-E<gt>new PrintError ``on''.
 
 The RaiseError attribute can be used to force errors to raise exceptions
 rather than simply return error codes in the normal way. It is ``off''
-(say, a false value in Perl) by default. When set ``on'', any method 
+(say, a false value in Perl) by default. When set ``on'', any method
 which results in an error will cause the PerlMaple to effectively do a
 C<croak("PerlMaple error: ", $self->error, " when evaluating \"$exp\"";)>.
 
-If you turn RaiseError on then you'd normally turn PrintError off. 
+If you turn RaiseError on then you'd normally turn PrintError off.
 If PrintError is also on, then the PrintError is done first (naturally).
 
 =item -E<gt>ReturnAST
@@ -365,7 +365,7 @@ Indicates whether the last Maple evaluation is successful.
 
 =head1 CODE COVERAGE
 
-I use L<Devel::Cover> to test the code coverage of my tests, below is the 
+I use L<Devel::Cover> to test the code coverage of my tests, below is the
 L<Devel::Cover> report on this module's test suite (version 0.02):
 
     ---------------------------- ------ ------ ------ ------ ------ ------ ------
@@ -375,6 +375,21 @@ L<Devel::Cover> report on this module's test suite (version 0.02):
     ...b/PerlMaple/Expression.pm  100.0   94.4   66.7  100.0  100.0    1.9   95.1
     Total                          97.1   90.0   66.7  100.0  100.0  100.0   94.1
     ---------------------------- ------ ------ ------ ------ ------ ------ ------
+
+=head1 BUGS
+
+=over
+
+At this point, every PerlMaple objects are merely a bunch of options (e.g.
+PrintError, RaiseError, and ReturnAST). They actually share the same Maple
+engine for performance reasons. So the evaluating contexts for each
+PerlMaple objects may corrupt together. So please don't store
+permanent values in Maple variables, avoid reference Maple special variables,
+like %, %%, and don't trust the Maple contexts. Since they may be changed
+accidentally by other PerlMaple objects, even those used by
+PerlMaple::Expression instances, in the duration.
+
+=back
 
 =head1 TODO
 

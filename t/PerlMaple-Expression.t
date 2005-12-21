@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 74;
+use Test::More tests => 78;
 use Test::Deep;
 
 my $pack;
@@ -206,3 +206,17 @@ cmp_deeply \@b, ['x', '3'];
 is $a[1]->type, '`*`';
 @b = map { $_->expr } $a[1]->ops;
 cmp_deeply \@b, ['2', 'x'];
+
+use List::Util 'first';
+$maple = PerlMaple->new(ReturnAST => 1);
+ok $maple;
+ok $maple->eval_cmd('s:={a(n) = 9*a(n-1)+b(n-1), b(n) = a(n-1)+9*b(n-1), a(1) = 8, b(1) = 1};');
+my $res = $maple->rsolve("s", "{a(n),b(n)}");
+like $res, qr/a\(n\)/;
+my $a_n;
+if ($res->type('set')) {
+    $a_n = first { $maple->lhs($_) eq 'a(n)' } $res->ops;
+    $a_n = $maple->rhs($a_n);
+}
+@a = map { $maple->eval($a_n, "n=$_") } 1..4;
+is join(',', @a), '8,73,674,6292';
