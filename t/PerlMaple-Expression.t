@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 63;
+use Test::More tests => 74;
 use Test::Deep;
 
 my $pack;
@@ -42,6 +42,18 @@ $ast = $ast->new('3.5');
 ok $ast, 'obj ok';
 isa_ok $ast, $pack;
 is $ast->expr, '3.5';
+
+my $maple = $PerlMaple::Expression::maple;
+is $maple->floor($ast), '3';
+is $maple->ceil($ast), '4';
+is int($ast)+3, 6;
+ok $ast == 3.5;
+ok $ast != 3.6;
+ok $ast < 3.6;
+ok not $ast > 3.6;
+ok $ast <= 3.6;
+ok $ast > 2;
+ok 2 < $ast;
 
 my @ops = (
     bless({
@@ -168,8 +180,11 @@ is $ast->expr, '2,        3,4';
 $ast = PerlMaple::Expression->new('[7,8,9]');
 @ops = $ast->ops;
 is $ops[0]->expr, 7;
+is $ops[0], 7;
 is $ops[1]->expr, 8;
+is $ops[1], 8;
 is $ops[2]->expr, 9;
+is $ops[2], 9;
 
 my $expr = PerlMaple::Expression->new('x^3+2*x-1');
 is $expr->expr, 'x^3+2*x-1';
@@ -177,8 +192,6 @@ is $expr->expr, 'x^3+2*x-1';
 is "$expr", 'x^3+2*x-1', 'overloaded stringify ("") operator';
 ok $expr eq 'x^3+2*x-1', 'overloaded eq operator';
 ok $expr ne 'x^3 + 2*x - 1', 'overloaded eq operator';
-ok $expr == 'x^3 + 2*x - 1', 'overloaded == operator';
-ok $expr != 'x^9 + 2*x - 1', 'overloaded != operator';
 
 is $expr->type, '`+`';
 my @a = $expr->ops;
