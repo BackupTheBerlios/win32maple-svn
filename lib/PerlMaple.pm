@@ -46,10 +46,12 @@ sub eval_cmd {
             $self->{ReturnAST} ? $self->to_ast($res) : $res;
     }
     if ($self->{PrintError}) {
-        carp "PerlMaple error: ", $self->error;
+        carp "PerlMaple error: ", $self->error,
+            " when evaluating \"$exp\"";
     }
     if ($self->{RaiseError}) {
-        croak "PerlMaple error: ", $self->error;
+        croak "PerlMaple error: ", $self->error,
+            " when evaluating \"$exp\"";
     }
     return undef;
 }
@@ -305,7 +307,7 @@ The PrintError attribute can be used to force errors to generate warnings
 (using Carp::carp) in addition to returning error codes in the normal way. When
 set ``on'' (say, a true value), any method which results in an error 
 occurring will cause the PerlMaple to effectively do a 
-C<carp("PerlMaple error: ", $self->error)>.
+C<carp("PerlMaple error: ", $self->error, " when evaluating \"$exp\"";)>.
 
 By default, PerlMaple-E<gt>new PrintError ``on''.
 
@@ -317,7 +319,7 @@ The RaiseError attribute can be used to force errors to raise exceptions
 rather than simply return error codes in the normal way. It is ``off''
 (say, a false value in Perl) by default. When set ``on'', any method 
 which results in an error will cause the PerlMaple to effectively do a
-C<croak("PerlMaple error: ", $self->error)>.
+C<croak("PerlMaple error: ", $self->error, " when evaluating \"$exp\"";)>.
 
 If you turn RaiseError on then you'd normally turn PrintError off. 
 If PrintError is also on, then the PrintError is done first (naturally).
