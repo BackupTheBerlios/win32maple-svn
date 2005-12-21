@@ -13,6 +13,13 @@ use PerlMaple;
 
 our $maple;
 
+use overload
+    '""' => sub { $_[0]->expr; },
+    'eq' => sub { "$_[0]" eq "$_[1]"; },
+    'ne' => sub { "$_[0]" ne "$_[1]"; },
+    '==' => sub { $maple->testeq("$_[0]", "$_[1]") eq 'true'; },
+    '!=' => sub { not ($_[0] == $_[1]); };
+
 sub new {
     my $proto = shift;
     my $class = ref $proto || $proto;
@@ -21,7 +28,7 @@ sub new {
 
     return undef if not defined $expr;
 
-    $maple ||= PerlMaple->new;
+    $maple ||= PerlMaple->new(ReturnAST => 0);
     $expr = $maple->eval_cmd("$expr;") if not $verified;
     my $type = $maple->whattype($expr);
     ### Type: $type => $expr
@@ -121,6 +128,20 @@ For example, functions like C<whattype>, C<nops>, and C<op>. So, don't worry for
 the sanity of this library.
 
 =head1 METHODS
+
+For convenience, PerlMaple::Expression overloads the following operators:
+
+    ""      - stringify operator
+    eq      - string exact comparison
+    ne      - the opposite of the overloaded eq operator
+    ==      - expression equality comparison using
+              Maple's C<testeq> function
+              (only succeeds when C<testeq> returns 'true'.
+    !=      - the opposite of the overloaded == operator,
+              namely, C<testeq> returns anything other than
+              'true' (not necessarily 'false').
+
+Furthermore, PerlMaple::Expression also exposes the following methods:
 
 =over
 

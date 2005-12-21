@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 56;
+use Test::More tests => 61;
 use Test::Deep;
 
 my $pack;
@@ -170,6 +170,13 @@ is $ops[2]->expr, 9;
 
 my $expr = PerlMaple::Expression->new('x^3+2*x-1');
 is $expr->expr, 'x^3+2*x-1';
+
+is "$expr", 'x^3+2*x-1', 'overloaded stringify ("") operator';
+ok $expr eq 'x^3+2*x-1', 'overloaded eq operator';
+ok $expr ne 'x^3 + 2*x - 1', 'overloaded eq operator';
+ok $expr == 'x^3 + 2*x - 1', 'overloaded == operator';
+ok $expr != 'x^9 + 2*x - 1', 'overloaded != operator';
+
 is $expr->type, '`+`';
 my @a = $expr->ops;
 ok @a;
