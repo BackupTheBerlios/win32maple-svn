@@ -2,7 +2,7 @@
 #: Implementation for the PerlMaple::Expression class
 #: v0.02
 #: Copyright (c) 2005 Agent Zhang
-#: 2005-12-19 2005-12-21
+#: 2005-12-19 2006-01-06
 
 package PerlMaple::Expression;
 
@@ -50,17 +50,19 @@ sub new {
     my $nops = $maple->nops($tmp_expr);
     $self->{nops} = $nops;
 
-    my $op = $maple->op(1, $tmp_expr);
-    if ($nops == 1 and $op eq $expr) {
-        push @ops, $op;
-        return $self;
-    }
-    ### Got: $op => $expr
-    push @ops, $class->new($op);
+    if ($nops > 0) {
+        my $op = $maple->op(1, $tmp_expr);
+        if ($nops == 1 and $op eq $expr) {
+            push @ops, $op;
+            return $self;
+        }
+        ### Got: $op => $expr
+        push @ops, $class->new($op);
 
-    for my $i (2..$nops) {
-        my $op = $maple->op($i, $tmp_expr);
-        push @ops, $class->new($op, 1);
+        for my $i (2..$nops) {
+            my $op = $maple->op($i, $tmp_expr);
+            push @ops, $class->new($op, 1);
+        }
     }
     return $self;
 }

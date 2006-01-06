@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 81;
+use Test::More tests => 83;
 use Test::Deep;
 
 my $pack;
@@ -225,3 +225,8 @@ $expr = PerlMaple::Expression->new( '(3+n)*(n^2+1)' );
 ok $expr;
 is $expr->expand->testeq('3*n^2+3+n^3+n'), 'true';
 is $expr->eval('n=1'), 8;
+
+$expr = PerlMaple::Expression->new( '[]' );
+ok $expr;
+@a = $expr->ops;
+is_deeply \@a, [];
