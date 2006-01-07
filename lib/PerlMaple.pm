@@ -38,7 +38,7 @@ sub eval_cmd {
     #if ($exp !~ /[;:]$/) {
     #    $exp .= ';';
     #}
-    if ($self->{LogCommands}) {
+    if ($self->{LogCmd}) {
         warn "$exp\n";
     }
     maple_eval($exp);
