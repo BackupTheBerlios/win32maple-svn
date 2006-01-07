@@ -2,7 +2,7 @@
 #: implementation for the PerlMaple class
 #: v0.02
 #: Copyright (c) 2005 Agent Zhang
-#: 2005-11-14 2005-12-21
+#: 2005-11-14 2005-01-07
 
 package PerlMaple;
 
@@ -38,7 +38,9 @@ sub eval_cmd {
     #if ($exp !~ /[;:]$/) {
     #    $exp .= ';';
     #}
-    #warn $exp;
+    if ($self->{LogCommands}) {
+        warn "$exp\n";
+    }
     maple_eval($exp);
     if (maple_success()) {
         my $res = maple_result();
