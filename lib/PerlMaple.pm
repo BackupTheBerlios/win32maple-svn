@@ -404,6 +404,11 @@ PerlMaple::Expression instances, in the duration.
 
 =item *
 
+Add the C<LogCommand> attribute so that PerlMaple will log down all the Maple 
+commands sent to the Maple engine in disk files.
+
+=item *
+
 Added PerlMaple::Cookbook and PerlMaple::Tutorial to the distribution.
 Programming Maple in Perl is extremely interesting and useful, so I
 believe these docs are really worth my while.
