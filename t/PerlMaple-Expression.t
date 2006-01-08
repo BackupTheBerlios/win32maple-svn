@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 83;
+use Test::More tests => 84;
 use Test::Deep;
 
 my $pack;
@@ -230,3 +230,7 @@ $expr = PerlMaple::Expression->new( '[]' );
 ok $expr;
 @a = $expr->ops;
 is_deeply \@a, [];
+
+$maple->ReturnAST(1);
+$expr = PerlMaple::Expression->new('ssss');
+ok $expr;

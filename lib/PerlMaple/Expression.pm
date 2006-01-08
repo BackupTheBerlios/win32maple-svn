@@ -46,6 +46,7 @@ sub new {
         ops  => \@ops,
     }, $class;
 
+
     my $tmp_expr = ($type eq 'exprseq') ? "[$expr]" : $expr;
     my $nops = $maple->nops($tmp_expr);
     $self->{nops} = $nops;
@@ -57,6 +58,8 @@ sub new {
             return $self;
         }
         ### Got: $op => $expr
+        warn "$op => $expr" if $self->{DEBUG};
+        #die "\n\nHHHH $expr" if length($expr) < 20 and $expr =~ /operator, arrow/;
         push @ops, $class->new($op);
 
         for my $i (2..$nops) {
@@ -98,6 +101,10 @@ sub AUTOLOAD {
 
     $method =~ s/.*:://;
     return if $method eq 'DESTROY';
+
+    if ($method =~ /^ReturnAst$/i) {
+        reurn $self->ReturnAST(@_);
+    }
 
     unshift @_, $self->expr;
     my $args = join(',', @_);

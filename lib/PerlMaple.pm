@@ -406,6 +406,11 @@ PerlMaple::Expression instances, in the duration.
 
 =item *
 
+Add facilities to ease importing of Perl complex data structures to Maple
+environment, ie. a list of lists of numbers.
+
+=item *
+
 Add the C<LogCommand> attribute so that PerlMaple will log down all the Maple 
 commands sent to the Maple engine in disk files.
 
