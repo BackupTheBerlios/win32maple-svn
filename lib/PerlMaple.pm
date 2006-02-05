@@ -407,7 +407,7 @@ PerlMaple::Expression instances, in the duration.
 =item *
 
 Add facilities to ease importing of Perl complex data structures to Maple
-environment, ie. a list of lists of numbers.
+environment, i.e. a list of lists of numbers.
 
 =item *
 
