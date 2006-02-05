@@ -1,10 +1,11 @@
 #: PerlMaple.pm
 #: implementation for the PerlMaple class
 #: Copyright (c) 2005-2006 Agent Zhang
-#: 2005-11-14 2006-02-05
+#: 2005-11-14 2006-02-06
 
 package PerlMaple;
 
+use 5.006;
 use strict;
 use warnings;
 
