@@ -1,6 +1,9 @@
 Revision history for Perl extension PerlMaple.
 
-0.02 12/19/2005
+0.03 2006-2-5
+    * 
+
+0.02 2005-12-19
     * Added SVN link 'https://svn.berlios.de/svnroot/repos/win32maple'
       to the POD doc.
     * On the XS side, ignored MAPLE_TEXT_STATUS output so that

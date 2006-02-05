@@ -1,8 +1,7 @@
 #: PerlMaple/Expression.pm
 #: Implementation for the PerlMaple::Expression class
-#: v0.02
-#: Copyright (c) 2005 Agent Zhang
-#: 2005-12-19 2006-01-06
+#: Copyright (c) 2005-2006 Agent Zhang
+#: 2005-12-19 2006-02-05
 
 package PerlMaple::Expression;
 
@@ -14,7 +13,7 @@ use vars qw( $AUTOLOAD );
 use PerlMaple;
 #use Smart::Comments;
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 our $maple;
 
 use overload
@@ -122,7 +121,7 @@ PerlMaple::Expression - Perl AST for arbitrary Maple expressions
 
 =head1 VERSION
 
-This document describes PerlMaple::Expression 0.02 released on December 19, 2005.
+This document describes PerlMaple::Expression 0.03 released on February 5, 2006.
 
 =head1 SYNOPSIS
 
@@ -331,7 +330,7 @@ Maple expression ASTs transparently.
 
 =head1 AUTHOR
 
-Agent Zhang, E<lt>agent2002@126.comE<gt>
+Agent Zhang, E<lt>agentzh@gmail.comE<gt>
 
 =head1 SEE ALSO
 

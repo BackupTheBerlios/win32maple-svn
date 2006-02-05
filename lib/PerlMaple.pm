@@ -1,8 +1,7 @@
 #: PerlMaple.pm
 #: implementation for the PerlMaple class
-#: v0.02
-#: Copyright (c) 2005 Agent Zhang
-#: 2005-11-14 2005-01-08
+#: Copyright (c) 2005-2006 Agent Zhang
+#: 2005-11-14 2006-02-05
 
 package PerlMaple;
 
@@ -13,7 +12,7 @@ use PerlMaple::Expression;
 use Carp qw(carp croak);
 use vars qw( $AUTOLOAD );
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 my $Started = 0;
 
 require XSLoader;
@@ -48,11 +47,11 @@ sub eval_cmd {
             $self->{ReturnAST} ? $self->to_ast($res) : $res;
     }
     if ($self->{PrintError}) {
-        carp "PerlMaple error: ", $self->error,
+        carp "PerlMaple: ", $self->error,
             " when evaluating \"$exp\"";
     }
     if ($self->{RaiseError}) {
-        croak "PerlMaple error: ", $self->error,
+        croak "PerlMaple: ", $self->error,
             " when evaluating \"$exp\"";
     }
     return undef;
@@ -176,7 +175,7 @@ PerlMaple - Perl binding for Waterloo's Maple software
 
 =head1 VERSION
 
-This document describes PerlMaple 0.02 released on December 19, 2005.
+This document describes PerlMaple 0.03 released on February 5, 2006.
 
 =head1 DESCRIPTION
 
@@ -375,14 +374,14 @@ Indicates whether the last Maple evaluation is successful.
 =head1 CODE COVERAGE
 
 I use L<Devel::Cover> to test the code coverage of my tests, below is the
-L<Devel::Cover> report on this module's test suite (version 0.02):
+L<Devel::Cover> report on this module's test suite (version 0.03):
 
     ---------------------------- ------ ------ ------ ------ ------ ------ ------
     File                           stmt   bran   cond    sub    pod   time  total
     ---------------------------- ------ ------ ------ ------ ------ ------ ------
-    blib/lib/PerlMaple.pm          94.8   86.4   66.7  100.0  100.0   98.1   93.2
-    ...b/PerlMaple/Expression.pm  100.0   94.4   66.7  100.0  100.0    1.9   95.1
-    Total                          97.1   90.0   66.7  100.0  100.0  100.0   94.1
+    blib/lib/PerlMaple.pm          93.3   83.3   66.7  100.0  100.0   90.0   91.6
+    ...b/PerlMaple/Expression.pm   98.5   90.0   77.8  100.0  100.0   10.0   95.1
+    Total                          96.1   87.0   75.0  100.0  100.0  100.0   93.4
     ---------------------------- ------ ------ ------ ------ ------ ------ ------
 
 =head1 BUGS
@@ -433,16 +432,16 @@ If you want a committer bit, please let me know.
 
 =head1 SEE ALSO
 
-L<http://www.maplesoft.com>,
-L<PerlMaple::Expression>.
+L<PerlMaple::Expression>,
+L<http://www.maplesoft.com>.
 
 =head1 AUTHOR
 
-Agent Zhang, E<lt>agent2002@126.comE<gt>
+Agent Zhang, E<lt>agentzh@gmail.comE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2005 Agent Zhang
+Copyright (C) 2005-2006 Agent Zhang
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

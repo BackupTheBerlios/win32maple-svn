@@ -1,4 +1,4 @@
-PerlMaple version 0.02
+PerlMaple version 0.03
 ======================
 
 This is a very simple interface to Waterloo's Maple software via the OpenMaple
@@ -45,7 +45,7 @@ DEPENDENCIES
 
 COPYRIGHT AND LICENCE
 
-Copyright (C) 2005 Agent Zhang
+Copyright (C) 2005-2006 Agent Zhang
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
