@@ -1,7 +1,7 @@
 #: PerlMaple/Expression.pm
 #: Implementation for the PerlMaple::Expression class
-#: Copyright (c) 2005-2006 Agent Zhang
-#: 2005-12-19 2006-02-05
+#: Copyright (C) 2005, 2006 Agent Zhang
+#: 2005-12-19 2006-02-06
 
 package PerlMaple::Expression;
 
