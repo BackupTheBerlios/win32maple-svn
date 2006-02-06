@@ -116,7 +116,11 @@ __END__
 
 =head1 NAME
 
-PerlMaple - Perl binding for Waterloo's Maple software
+PerlMaple - Perl binding for Maplesoft's Maple mathematical package
+
+=head1 VERSION
+
+This document describes PerlMaple 0.03 released on February 5, 2006.
 
 =head1 SYNOPSIS
 
@@ -174,25 +178,26 @@ PerlMaple - Perl binding for Waterloo's Maple software
       print $x->rhs;  # 5/2
   }
 
-=head1 VERSION
-
-This document describes PerlMaple 0.03 released on February 5, 2006.
-
 =head1 DESCRIPTION
 
-This is a very simple interface to Waterloo's Maple software via the OpenMaple
-C interface. To use this library, you have to purchase the Maple software:
+Maple is a great tool for solving mathematical problems and creating
+interactive technical applications provided by Maplesoft. Its power of 
+symbolic calculation is extremely impressive.
+
+This is a simple (but already powerful) Perl binding for Maple's
+OpenMaple C interface. To try out this binding, you have to 
+purchase and install the Maple software first:
 
 L<http://www.maplesoft.com>.
 
-Unfortunately, he Maple software is *not* free, sorry, unlike this CPAN
-distribution.
+The Maple software is *not* free, sigh, unlike this CPAN distribution.
 
 =head1 INSTALLATION
 
-Currently this software is only tested on Win32. To build this module
-properly, you must first have Maple 9 or better installed on your
-system and append
+Currently this software is only tested on Win32 against Maple 9.
+
+To build this module properly, you must first have Maple 9 or better 
+installed on your system and append
 the paths of B<maplec.h> and B<maplec.lib> in your Maple installation to the
 environments LIB and INC respectively. Because this module use Maple's
 C interface (OpenMaple) via XS.
