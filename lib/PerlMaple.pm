@@ -194,7 +194,10 @@ The Maple software is *not* free, sigh, unlike this CPAN distribution.
 
 =head1 INSTALLATION
 
-Currently this software is only tested on Win32 against Maple 9.
+Currently this software is only tested on Win32 against Maple 9.01 and
+Maple 10.00, but it's believed to work with other versions higher than
+9. If you get it work with a specific version of Maple, please send me
+a mail and let me know. :=)
 
 To build this module properly, you must first have Maple 9 or better 
 installed on your system and append
