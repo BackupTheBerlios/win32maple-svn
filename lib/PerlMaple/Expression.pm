@@ -185,7 +185,7 @@ This class represents an Abstract Syntactic Tree (AST) for any Maple expressions
 It provides several very useful methods and attributes to manipulate Maple
 expressions effectively and cleanly.
 
-Hey, there's no parser written in Perl! I used Maple's functions to import the ASTs.
+Hey, there's no parser written in Perl! It uses Maple's functions to import the ASTs.
 For example, functions like C<whattype>, C<nops>, and C<op>. So, don't worry for
 the sanity of this library.
 

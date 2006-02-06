@@ -226,43 +226,45 @@ methods of your PerlMaple object, even those Maple procedures defined by
 yourself.
 
 When the ReturnAST attribute is on, all AUTOLOADed methods, along with the
--E<gt>eval_cmd method will return a
+C<eval_cmd> method will return a
 PerlMaple::Expression object constructed from the resulting expression.
 Because there's a cost involved in constructing an AST from the given Maple
 expression, so the ReturnAST attribute is off by default.
 
-B<WARNING:> The -E<gt>eval method is now incompatible with that of the first
+B<WARNING:> The C<eval> method is now incompatible with that of the first
 release (0.01). It is AUTOLOADed as the Maple counterpart. So you have to turn to
--E<gt>eval_cmd when Maple's eval function can't fit your needs. Sorry.
+C<eval_cmd> when Maple's eval function can't fit your needs. Sorry.
 
 =over
 
-=item -E<gt>new(RaiseError => .., PrintError => .., ReturnAST => ..)
+=item $obj->new()
+
+=item $obj->new(RaiseError => 0, PrintError => 1, ReturnAST => 0)
 
 Class constructor. It starts a Maple session if it does not exist. It should
 be noting that although you're able to create more than one PerlMaple objects,
 all these maple objects share the same Maple session. So the context of each
 PerlMaple objects may be corrupted intentionally. If any error occurs, this
 method will return undef value, and set the internal error buffer which you can
-read by the -E<gt>error() method.
+read by the C<error> method.
 
 This method also accepts two optional named arguments. When RaiseError is
 set true, the constructor sets the RaiseError attribute of the new object
 internally. And it is the same for the PrintError and ReturnAST attributes.
 
-=item -E<gt>eval_cmd($command)
+=item $obj->eval_cmd($command)
 
 This method may be the most important one for the implementation of this class.
 It evaluates the
 command stored in the argument, and returns a string containing the result
 when the ReturnAST attribute is off. (It's off by default.)
 If an error occurs, it will return undef, and set the internal error buffer
-which you can read by the -E<gt>error() method.
+which you can read by the C<error> method.
 
-Frankly speaking, most of the time you can use -E<gt>eval method instead of
+Frankly speaking, most of the time you can use C<eval> method instead of
 invoking this method directly. However, this method is a bit faster,
 because any AUTOLOADed method is invoked this one internally. Moreover, there
-exists something that can only be eval'ed properly by -E<gt>eval_cmd.
+exists something that can only be eval'ed properly by C<eval_cmd>.
 Here is a small example:
 
     $maple->eval_cmd(<<'.');
@@ -272,7 +274,7 @@ Here is a small example:
     end proc;
     .
 
-If you use -E<gt>eval instead, you will get the following error message:
+If you use C<eval> instead, you will get the following error message:
 
     `:=` unexpected
 
@@ -283,7 +285,7 @@ When the ReturnAST attribute is on, this method will return a
 PerlMaple::Expression object constructed from the expression returned by
 Maple automatically.
 
-=item -E<gt>to_ast($maple_expr, ?$verified)
+=item $obj->to_ast($maple_expr, ?$verified)
 
 This method is a shortcut for constructing a PerlMaple::Expression
 instance. For more information on the PerlMaple::Expression class
@@ -300,7 +302,7 @@ class (you can get many more in the doc for L<PerlMaple::Expression>.
     }
     # now @list contains numbers 1, 2, and 3.
 
-=item -E<gt>error()
+=item $obj->error()
 
 It returns the error message issued by the Maple kernel.
 
@@ -309,13 +311,13 @@ It returns the error message issued by the Maple kernel.
 =head1 ATTRIBUTES
 
 All the attributes specified below can be set by passing name-value pairs to
-the -E<gt>new method.
+the C<new> method.
 
 =over
 
-=item -E<gt>PrintError
+=item $obj->PrintError()
 
-=item -E<gt>PrintError($new_value)
+=item $obj->PrintError($new_value)
 
 The PrintError attribute can be used to force errors to generate warnings
 (using Carp::carp) in addition to returning error codes in the normal way. When
@@ -323,11 +325,11 @@ set ``on'' (say, a true value), any method which results in an error
 occurring will cause the PerlMaple to effectively do a
 C<carp("PerlMaple error: ", $self->error, " when evaluating \"$exp\"";)>.
 
-By default, PerlMaple-E<gt>new PrintError ``on''.
+By default, the constructor C<new> sets PrintError ``on''.
 
-=item -E<gt>RaiseError
+=item $obj->RaiseError()
 
-=item -E<gt>RaiseError($new_value)
+=item $obj->RaiseError($new_value)
 
 The RaiseError attribute can be used to force errors to raise exceptions
 rather than simply return error codes in the normal way. It is ``off''
@@ -338,13 +340,13 @@ C<croak("PerlMaple error: ", $self->error, " when evaluating \"$exp\"";)>.
 If you turn RaiseError on then you'd normally turn PrintError off.
 If PrintError is also on, then the PrintError is done first (naturally).
 
-=item -E<gt>ReturnAST
+=item $obj->ReturnAST()
 
-=item -E<gt>ReturnAST($new_value)
+=item $obj->ReturnAST($new_value)
 
-The ReturnAST attribute can be used to force the -E<gt>eval_cmd method
+The ReturnAST attribute can be used to force the C<eval_cmd> method
 and hence all AUTOLOADed Maple functions to return a Abstract
-Syntactic Tree (AST). Because there is a cost to evaluate the -E<gt>to_ast
+Syntactic Tree (AST). Because there is a cost to evaluate the C<to_ast>
 method every time, so this attribute is off by default.
 
 =back
