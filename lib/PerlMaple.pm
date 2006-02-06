@@ -13,7 +13,7 @@ use PerlMaple::Expression;
 use Carp qw(carp croak);
 use vars qw( $AUTOLOAD );
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 my $Started = 0;
 
 require XSLoader;
@@ -120,7 +120,7 @@ PerlMaple - Perl binding for Maplesoft's Maple mathematical package
 
 =head1 VERSION
 
-This document describes PerlMaple 0.03 released on February 5, 2006.
+This document describes PerlMaple 0.04 released on February 6, 2006.
 
 =head1 SYNOPSIS
 
