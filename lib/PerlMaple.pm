@@ -382,14 +382,14 @@ Indicates whether the last Maple evaluation is successful.
 =head1 CODE COVERAGE
 
 I use L<Devel::Cover> to test the code coverage of my tests, below is the
-L<Devel::Cover> report on this module's test suite (version 0.03):
+L<Devel::Cover> report on this module's test suite (version 0.04):
 
     ---------------------------- ------ ------ ------ ------ ------ ------ ------
     File                           stmt   bran   cond    sub    pod   time  total
     ---------------------------- ------ ------ ------ ------ ------ ------ ------
-    blib/lib/PerlMaple.pm          93.3   83.3   66.7  100.0  100.0   90.0   91.6
-    ...b/PerlMaple/Expression.pm   98.5   90.0   77.8  100.0  100.0   10.0   95.1
-    Total                          96.1   87.0   75.0  100.0  100.0  100.0   93.4
+    blib/lib/PerlMaple.pm          93.7   83.3   66.7  100.0  100.0  100.0   91.9
+    ...b/PerlMaple/Expression.pm   98.7   88.9   66.7  100.0  100.0    0.0   94.6
+    Total                          96.5   86.7   66.7  100.0  100.0  100.0   93.4
     ---------------------------- ------ ------ ------ ------ ------ ------ ------
 
 =head1 BUGS
