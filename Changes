@@ -1,3 +1,11 @@
+= Changes for PerlMaple 0.06 (rev 48) - May 2, 2006
+
+== Core Enhancements
+
+* made warning messages issued by the Maple kernel controllable 
+  (MAPLE_TEXT_WARNING no long directly goes to stderr, but stores 
+  in a buffer controlled by PrintError)
+
 = Changes for PerlMaple 0.05 (rev 46) - Feb 18, 2006
 
 == Documents
