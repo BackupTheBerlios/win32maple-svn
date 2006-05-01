@@ -1,7 +1,7 @@
 #: PerlMaple.pm
 #: implementation for the PerlMaple class
 #: Copyright (c) 2005-2006 Agent Zhang
-#: 2005-11-14 2006-02-18
+#: 2005-11-14 2006-05-02
 
 package PerlMaple;
 
@@ -42,6 +42,10 @@ sub eval_cmd {
         warn "$exp\n";
     }
     maple_eval($exp);
+    my $warning = maple_warning();
+    if ($self->{PrintError} and $warning) {
+        carp "PerlMaple: $warning";
+    }
     if (maple_success()) {
         my $res = maple_result();
         return
@@ -361,6 +365,10 @@ method every time, so this attribute is off by default.
 =item maple_error
 
 Returns the raw error message issued by the Maple kernel.
+
+=item maple_warning
+
+Returns the raw warning message returned by the Maple kernel.
 
 =item maple_eval
 
